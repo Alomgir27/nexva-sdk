@@ -1,0 +1,58 @@
+{
+  "name": "@nexva/react",
+  "version": "1.0.0",
+  "description": "React and Next.js components for Nexva AI Chat Widget",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts --external react --external react-dom --external next",
+    "dev": "tsup src/index.ts --format cjs,esm --dts --external react --external react-dom --external next --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "nexva",
+    "chat",
+    "chatbot",
+    "ai",
+    "react",
+    "nextjs",
+    "widget",
+    "customer-support"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "peerDependenciesMeta": {
+    "next": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next": "^14.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/nexva-react"
+  }
+}
+
