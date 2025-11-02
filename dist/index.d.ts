@@ -15,9 +15,22 @@ interface NexvaChatConfig {
     enableFullscreen?: boolean;
     autoOpen?: boolean;
     borderRadius?: string;
+    borderColor?: string;
+    borderWidth?: string;
     buttonSize?: string;
     headerText?: string;
     theme?: 'light' | 'dark';
+    presetQuestions?: string[];
+    bubble?: {
+        backgroundColor?: string;
+        size?: string;
+        shape?: 'circle' | 'square';
+        icon?: string;
+        iconColor?: string;
+        customIconUrl?: string;
+        shadow?: boolean;
+        animation?: 'pulse' | 'bounce' | 'none';
+    };
 }
 declare global {
     interface Window {

@@ -1,6 +1,6 @@
 {
   "name": "nexva-react",
-  "version": "1.0.1",
+  "version": "1.0.5",
   "description": "React and Next.js components for Nexva AI Chat Widget",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -24,14 +24,21 @@
     "nexva",
     "chat",
     "chatbot",
+    "voice",
+    "human-support",
+    "voice-chat",
     "ai",
     "react",
     "nextjs",
     "widget",
     "customer-support"
   ],
-  "author": "Your Name",
+  "author": "Nexva",
   "license": "MIT",
+  "homepage": "https://nexva.pages.dev",
+  "bugs": {
+    "url": "https://github.com/Alomgir27/nexva-sdk/issues"
+  },
   "peerDependencies": {
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0"
