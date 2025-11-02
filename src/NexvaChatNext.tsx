@@ -10,10 +10,12 @@ interface NexvaChatNextProps {
 
 export const NexvaChatNext: React.FC<NexvaChatNextProps> = ({ config }) => {
   const isInitialized = useRef(false);
+  
+  const apiUrl = config.apiUrl || 'https://yueihds3xl383a-5000.proxy.runpod.net';
 
   const handleScriptLoad = () => {
     if (!isInitialized.current && window.NexvaChat) {
-      window.NexvaChat.init(config.apiKey, config);
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
@@ -27,13 +29,12 @@ export const NexvaChatNext: React.FC<NexvaChatNextProps> = ({ config }) => {
     };
   }, []);
 
-  const scriptSrc = config.apiUrl 
-    ? `${config.apiUrl}/widget.js` 
-    : 'https://yueihds3xl383a-5000.proxy.runpod.net/widget.js';
+  const scriptSrc = `${apiUrl}/widget.js`;
 
   return (
     <Script
       src={scriptSrc}
+      type="module"
       strategy="lazyOnload"
       onLoad={handleScriptLoad}
     />

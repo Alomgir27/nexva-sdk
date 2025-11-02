@@ -5,14 +5,16 @@ import React from "react";
 import { useEffect, useRef } from "react";
 var useNexva = (config) => {
   const isInitialized = useRef(false);
+  const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
   useEffect(() => {
     if (isInitialized.current) return;
     const script = document.createElement("script");
-    script.src = config.apiUrl ? `${config.apiUrl}/widget.js` : "https://yueihds3xl383a-5000.proxy.runpod.net/widget.js";
+    script.type = "module";
+    script.src = `${apiUrl}/widget.js`;
     script.async = true;
     script.onload = () => {
       if (window.NexvaChat) {
-        window.NexvaChat.init(config.apiKey, config);
+        window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
         isInitialized.current = true;
       }
     };
@@ -52,9 +54,10 @@ import React2, { useEffect as useEffect2, useRef as useRef2 } from "react";
 import Script from "next/script";
 var NexvaChatNext = ({ config }) => {
   const isInitialized = useRef2(false);
+  const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
   const handleScriptLoad = () => {
     if (!isInitialized.current && window.NexvaChat) {
-      window.NexvaChat.init(config.apiKey, config);
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
@@ -66,11 +69,12 @@ var NexvaChatNext = ({ config }) => {
       isInitialized.current = false;
     };
   }, []);
-  const scriptSrc = config.apiUrl ? `${config.apiUrl}/widget.js` : "https://yueihds3xl383a-5000.proxy.runpod.net/widget.js";
+  const scriptSrc = `${apiUrl}/widget.js`;
   return /* @__PURE__ */ React2.createElement(
     Script,
     {
       src: scriptSrc,
+      type: "module",
       strategy: "lazyOnload",
       onLoad: handleScriptLoad
     }

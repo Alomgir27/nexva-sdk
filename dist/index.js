@@ -43,14 +43,16 @@ var import_react2 = __toESM(require("react"));
 var import_react = require("react");
 var useNexva = (config) => {
   const isInitialized = (0, import_react.useRef)(false);
+  const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
   (0, import_react.useEffect)(() => {
     if (isInitialized.current) return;
     const script = document.createElement("script");
-    script.src = config.apiUrl ? `${config.apiUrl}/widget.js` : "https://yueihds3xl383a-5000.proxy.runpod.net/widget.js";
+    script.type = "module";
+    script.src = `${apiUrl}/widget.js`;
     script.async = true;
     script.onload = () => {
       if (window.NexvaChat) {
-        window.NexvaChat.init(config.apiKey, config);
+        window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
         isInitialized.current = true;
       }
     };
@@ -90,9 +92,10 @@ var import_react3 = __toESM(require("react"));
 var import_script = __toESM(require("next/script"));
 var NexvaChatNext = ({ config }) => {
   const isInitialized = (0, import_react3.useRef)(false);
+  const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
   const handleScriptLoad = () => {
     if (!isInitialized.current && window.NexvaChat) {
-      window.NexvaChat.init(config.apiKey, config);
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
@@ -104,11 +107,12 @@ var NexvaChatNext = ({ config }) => {
       isInitialized.current = false;
     };
   }, []);
-  const scriptSrc = config.apiUrl ? `${config.apiUrl}/widget.js` : "https://yueihds3xl383a-5000.proxy.runpod.net/widget.js";
+  const scriptSrc = `${apiUrl}/widget.js`;
   return /* @__PURE__ */ import_react3.default.createElement(
     import_script.default,
     {
       src: scriptSrc,
+      type: "module",
       strategy: "lazyOnload",
       onLoad: handleScriptLoad
     }
