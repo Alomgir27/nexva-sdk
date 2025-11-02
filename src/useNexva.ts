@@ -10,7 +10,7 @@ export const useNexva = (config: NexvaChatConfig) => {
     const script = document.createElement('script');
     script.src = config.apiUrl 
       ? `${config.apiUrl}/widget.js` 
-      : 'https://api.nexva.ai/widget.js';
+      : 'https://yueihds3xl383a-5000.proxy.runpod.net/widget.js';
     script.async = true;
 
     script.onload = () => {

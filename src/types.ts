@@ -8,6 +8,9 @@ export interface NexvaChatConfig {
   placeholder?: string;
   enableVoice?: boolean;
   enableHumanSupport?: boolean;
+  enableIntroSound?: boolean;
+  enableDock?: boolean;
+  enableFullscreen?: boolean;
   autoOpen?: boolean;
   borderRadius?: string;
   buttonSize?: string;

@@ -4,7 +4,7 @@
 
 ```tsx
 // app/layout.tsx
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 
 export default function RootLayout({
   children,
@@ -18,7 +18,6 @@ export default function RootLayout({
         <NexvaChatNext
           config={{
             apiKey: process.env.NEXT_PUBLIC_NEXVA_API_KEY!,
-            apiUrl: 'https://api.nexva.ai',
             position: 'bottom-right',
             primaryColor: '#32f08c',
             welcomeMessage: 'Hi! How can I help you today?',
@@ -37,7 +36,7 @@ export default function RootLayout({
 ```tsx
 // pages/_app.tsx
 import type { AppProps } from 'next/app';
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -46,7 +45,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <NexvaChatNext
         config={{
           apiKey: process.env.NEXT_PUBLIC_NEXVA_API_KEY!,
-          apiUrl: 'https://api.nexva.ai',
         }}
       />
     </>
@@ -60,7 +58,7 @@ export default MyApp;
 
 ```tsx
 // App.tsx
-import { NexvaChat } from '@nexva/react';
+import { NexvaChat } from 'nexva-react';
 
 function App() {
   return (
@@ -69,7 +67,6 @@ function App() {
       <NexvaChat
         config={{
           apiKey: import.meta.env.VITE_NEXVA_API_KEY,
-          apiUrl: 'https://api.nexva.ai',
         }}
       />
     </div>
@@ -82,13 +79,12 @@ export default App;
 ## Using the Hook for Custom Control
 
 ```tsx
-import { useNexva } from '@nexva/react';
+import { useNexva } from 'nexva-react';
 import { useState } from 'react';
 
 function CustomerSupport() {
   const { open, close } = useNexva({
     apiKey: 'your-api-key',
-    apiUrl: 'https://api.nexva.ai',
     primaryColor: '#667eea',
   });
 
@@ -108,7 +104,7 @@ function CustomerSupport() {
 ## Conditional Rendering
 
 ```tsx
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 
 export default function Layout({ children }) {
   const showChat = process.env.NODE_ENV === 'production';
@@ -133,7 +129,7 @@ export default function Layout({ children }) {
 ## Custom Styling
 
 ```tsx
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 
 export default function Layout({ children }) {
   return (
@@ -162,7 +158,6 @@ export default function Layout({ children }) {
 ```bash
 # .env.local
 NEXT_PUBLIC_NEXVA_API_KEY=your_api_key_here
-NEXT_PUBLIC_NEXVA_API_URL=https://api.nexva.ai
 ```
 
 ```tsx
@@ -170,7 +165,6 @@ NEXT_PUBLIC_NEXVA_API_URL=https://api.nexva.ai
 <NexvaChatNext
   config={{
     apiKey: process.env.NEXT_PUBLIC_NEXVA_API_KEY!,
-    apiUrl: process.env.NEXT_PUBLIC_NEXVA_API_URL,
   }}
 />
 ```

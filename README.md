@@ -1,15 +1,15 @@
-# @nexva/react
+# nexva-react
 
 React and Next.js components for integrating Nexva AI Chat Widget into your application.
 
 ## Installation
 
 ```bash
-npm install @nexva/react
+npm install nexva-react
 # or
-yarn add @nexva/react
+yarn add nexva-react
 # or
-pnpm add @nexva/react
+pnpm add nexva-react
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ pnpm add @nexva/react
 
 ```tsx
 // app/layout.tsx
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 
 export default function RootLayout({ children }) {
   return (
@@ -28,7 +28,6 @@ export default function RootLayout({ children }) {
         <NexvaChatNext
           config={{
             apiKey: 'your-api-key',
-            apiUrl: 'https://api.nexva.ai',
             position: 'bottom-right',
             primaryColor: '#32f08c',
             enableVoice: true,
@@ -45,7 +44,7 @@ export default function RootLayout({ children }) {
 
 ```tsx
 // pages/_app.tsx
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -54,7 +53,6 @@ function MyApp({ Component, pageProps }) {
       <NexvaChatNext
         config={{
           apiKey: 'your-api-key',
-          apiUrl: 'https://api.nexva.ai',
         }}
       />
     </>
@@ -67,7 +65,7 @@ export default MyApp;
 ### React (Create React App, Vite, etc.)
 
 ```tsx
-import { NexvaChat } from '@nexva/react';
+import { NexvaChat } from 'nexva-react';
 
 function App() {
   return (
@@ -76,7 +74,6 @@ function App() {
       <NexvaChat
         config={{
           apiKey: 'your-api-key',
-          apiUrl: 'https://api.nexva.ai',
           primaryColor: '#32f08c',
         }}
       />
@@ -88,12 +85,11 @@ function App() {
 ### Using the Hook
 
 ```tsx
-import { useNexva } from '@nexva/react';
+import { useNexva } from 'nexva-react';
 
 function MyComponent() {
   const { open, close } = useNexva({
     apiKey: 'your-api-key',
-    apiUrl: 'https://api.nexva.ai',
   });
 
   return (
@@ -110,7 +106,7 @@ function MyComponent() {
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `apiKey` | string | **required** | Your Nexva API key |
-| `apiUrl` | string | `https://api.nexva.ai` | API endpoint URL |
+| `apiUrl` | string | (auto) | API endpoint URL (optional, defaults to your backend) |
 | `position` | `'bottom-right' \| 'bottom-left'` | `'bottom-right'` | Widget position |
 | `primaryColor` | string | `'#32f08c'` | Primary brand color |
 | `buttonColor` | string | `primaryColor` | Chat button color |
@@ -129,7 +125,7 @@ function MyComponent() {
 This package includes TypeScript definitions out of the box.
 
 ```tsx
-import type { NexvaChatConfig } from '@nexva/react';
+import type { NexvaChatConfig } from 'nexva-react';
 
 const config: NexvaChatConfig = {
   apiKey: 'your-api-key',

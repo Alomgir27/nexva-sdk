@@ -29,7 +29,7 @@ export const NexvaChatNext: React.FC<NexvaChatNextProps> = ({ config }) => {
 
   const scriptSrc = config.apiUrl 
     ? `${config.apiUrl}/widget.js` 
-    : 'https://api.nexva.ai/widget.js';
+    : 'https://yueihds3xl383a-5000.proxy.runpod.net/widget.js';
 
   return (
     <Script

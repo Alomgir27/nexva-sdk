@@ -1,4 +1,4 @@
-# Publishing Guide for @nexva/react
+# Publishing Guide for nexva-react
 
 ## Prerequisites
 
@@ -23,13 +23,13 @@ npm run build
 npm link
 
 # In your test Next.js project
-npm link @nexva/react
+npm link nexva-react
 ```
 
 ### 3. Test the package
 Create a test Next.js app and try importing:
 ```tsx
-import { NexvaChatNext } from '@nexva/react';
+import { NexvaChatNext } from 'nexva-react';
 ```
 
 ## Publishing to NPM
@@ -55,7 +55,7 @@ npm publish --access public
 
 Users can install with:
 ```bash
-npm install @nexva/react
+npm install nexva-react
 ```
 
 ## Updating the Package
