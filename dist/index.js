@@ -92,16 +92,26 @@ var import_react3 = __toESM(require("react"));
 var import_script = __toESM(require("next/script"));
 var NexvaChatNext = ({ config }) => {
   const isInitialized = (0, import_react3.useRef)(false);
+  const apiKeyRef = (0, import_react3.useRef)(config.apiKey);
   const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
   const handleScriptLoad = () => {
-    if (!isInitialized.current && window.NexvaChat) {
-      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
+    if (!isInitialized.current && window.NexvaChat && apiKeyRef.current) {
+      window.NexvaChat.init(apiKeyRef.current, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
   (0, import_react3.useEffect)(() => {
+    apiKeyRef.current = config.apiKey;
+    if (isInitialized.current && window.NexvaChat && config.apiKey) {
+      window.NexvaChat.destroy();
+      isInitialized.current = false;
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
+      isInitialized.current = true;
+    }
+  }, [config.apiKey]);
+  (0, import_react3.useEffect)(() => {
     return () => {
-      if (window.NexvaChat) {
+      if (window.NexvaChat && isInitialized.current) {
         window.NexvaChat.destroy();
       }
       isInitialized.current = false;

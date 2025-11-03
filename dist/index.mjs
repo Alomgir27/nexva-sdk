@@ -54,16 +54,26 @@ import React2, { useEffect as useEffect2, useRef as useRef2 } from "react";
 import Script from "next/script";
 var NexvaChatNext = ({ config }) => {
   const isInitialized = useRef2(false);
+  const apiKeyRef = useRef2(config.apiKey);
   const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
   const handleScriptLoad = () => {
-    if (!isInitialized.current && window.NexvaChat) {
-      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
+    if (!isInitialized.current && window.NexvaChat && apiKeyRef.current) {
+      window.NexvaChat.init(apiKeyRef.current, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
   useEffect2(() => {
+    apiKeyRef.current = config.apiKey;
+    if (isInitialized.current && window.NexvaChat && config.apiKey) {
+      window.NexvaChat.destroy();
+      isInitialized.current = false;
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
+      isInitialized.current = true;
+    }
+  }, [config.apiKey]);
+  useEffect2(() => {
     return () => {
-      if (window.NexvaChat) {
+      if (window.NexvaChat && isInitialized.current) {
         window.NexvaChat.destroy();
       }
       isInitialized.current = false;

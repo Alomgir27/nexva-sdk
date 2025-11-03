@@ -1,6 +1,6 @@
 {
   "name": "nexva-react",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "React and Next.js components for Nexva AI Chat Widget",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -60,8 +60,5 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/Alomgir27/nexva-sdk"
-  },
-  "dependencies": {
-    "nexva-react": "^1.0.6"
   }
 }
