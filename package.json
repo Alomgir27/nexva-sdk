@@ -1,6 +1,6 @@
 {
   "name": "nexva-react",
-  "version": "1.0.8",
+  "version": "1.0.12",
   "description": "React and Next.js components for Nexva AI Chat Widget",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
