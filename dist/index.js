@@ -92,31 +92,43 @@ var import_react3 = __toESM(require("react"));
 var import_script = __toESM(require("next/script"));
 var NexvaChatNext = ({ config }) => {
   const isInitialized = (0, import_react3.useRef)(false);
-  const apiKeyRef = (0, import_react3.useRef)(config.apiKey);
+  const mountRef = (0, import_react3.useRef)(true);
   const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
-  const handleScriptLoad = () => {
-    if (!isInitialized.current && window.NexvaChat && apiKeyRef.current) {
-      window.NexvaChat.init(apiKeyRef.current, { ...config, apiUrl });
+  const initWidget = () => {
+    if (isInitialized.current || !mountRef.current) return;
+    if (window.NexvaChat && config.apiKey) {
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
   (0, import_react3.useEffect)(() => {
-    apiKeyRef.current = config.apiKey;
-    if (isInitialized.current && window.NexvaChat && config.apiKey) {
-      window.NexvaChat.destroy();
-      isInitialized.current = false;
-      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
-      isInitialized.current = true;
-    }
-  }, [config.apiKey]);
-  (0, import_react3.useEffect)(() => {
+    mountRef.current = true;
+    isInitialized.current = false;
+    initWidget();
+    const intervalId = setInterval(() => {
+      if (window.NexvaChat) {
+        initWidget();
+        if (isInitialized.current) {
+          clearInterval(intervalId);
+        }
+      }
+    }, 100);
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 1e4);
     return () => {
+      mountRef.current = false;
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
       if (window.NexvaChat && isInitialized.current) {
-        window.NexvaChat.destroy();
+        try {
+          window.NexvaChat.destroy();
+        } catch (e) {
+        }
       }
       isInitialized.current = false;
     };
-  }, []);
+  }, [config.apiKey, apiUrl]);
   const scriptSrc = `${apiUrl}/widget.js`;
   return /* @__PURE__ */ import_react3.default.createElement(
     import_script.default,
@@ -124,7 +136,8 @@ var NexvaChatNext = ({ config }) => {
       src: scriptSrc,
       type: "module",
       strategy: "lazyOnload",
-      onLoad: handleScriptLoad
+      crossOrigin: "anonymous",
+      onLoad: initWidget
     }
   );
 };

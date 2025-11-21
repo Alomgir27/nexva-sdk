@@ -54,31 +54,43 @@ import React2, { useEffect as useEffect2, useRef as useRef2 } from "react";
 import Script from "next/script";
 var NexvaChatNext = ({ config }) => {
   const isInitialized = useRef2(false);
-  const apiKeyRef = useRef2(config.apiKey);
+  const mountRef = useRef2(true);
   const apiUrl = config.apiUrl || "https://yueihds3xl383a-5000.proxy.runpod.net";
-  const handleScriptLoad = () => {
-    if (!isInitialized.current && window.NexvaChat && apiKeyRef.current) {
-      window.NexvaChat.init(apiKeyRef.current, { ...config, apiUrl });
+  const initWidget = () => {
+    if (isInitialized.current || !mountRef.current) return;
+    if (window.NexvaChat && config.apiKey) {
+      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
   useEffect2(() => {
-    apiKeyRef.current = config.apiKey;
-    if (isInitialized.current && window.NexvaChat && config.apiKey) {
-      window.NexvaChat.destroy();
-      isInitialized.current = false;
-      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
-      isInitialized.current = true;
-    }
-  }, [config.apiKey]);
-  useEffect2(() => {
+    mountRef.current = true;
+    isInitialized.current = false;
+    initWidget();
+    const intervalId = setInterval(() => {
+      if (window.NexvaChat) {
+        initWidget();
+        if (isInitialized.current) {
+          clearInterval(intervalId);
+        }
+      }
+    }, 100);
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 1e4);
     return () => {
+      mountRef.current = false;
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
       if (window.NexvaChat && isInitialized.current) {
-        window.NexvaChat.destroy();
+        try {
+          window.NexvaChat.destroy();
+        } catch (e) {
+        }
       }
       isInitialized.current = false;
     };
-  }, []);
+  }, [config.apiKey, apiUrl]);
   const scriptSrc = `${apiUrl}/widget.js`;
   return /* @__PURE__ */ React2.createElement(
     Script,
@@ -86,7 +98,8 @@ var NexvaChatNext = ({ config }) => {
       src: scriptSrc,
       type: "module",
       strategy: "lazyOnload",
-      onLoad: handleScriptLoad
+      crossOrigin: "anonymous",
+      onLoad: initWidget
     }
   );
 };

@@ -10,36 +10,57 @@ interface NexvaChatNextProps {
 
 export const NexvaChatNext: React.FC<NexvaChatNextProps> = ({ config }) => {
   const isInitialized = useRef(false);
-  const apiKeyRef = useRef(config.apiKey);
-  
+  const mountRef = useRef(true);
+
   const apiUrl = config.apiUrl || 'https://yueihds3xl383a-5000.proxy.runpod.net';
 
-  const handleScriptLoad = () => {
-    if (!isInitialized.current && window.NexvaChat && apiKeyRef.current) {
-      window.NexvaChat.init(apiKeyRef.current, { ...config, apiUrl });
+  const initWidget = () => {
+    if (isInitialized.current || !mountRef.current) return;
+
+    if ((window as any).NexvaChat && config.apiKey) {
+      // console.log('[Nexva SDK] Initializing widget...');
+      (window as any).NexvaChat.init(config.apiKey, { ...config, apiUrl });
       isInitialized.current = true;
     }
   };
 
   useEffect(() => {
-    apiKeyRef.current = config.apiKey;
-    
-    if (isInitialized.current && window.NexvaChat && config.apiKey) {
-      window.NexvaChat.destroy();
-      isInitialized.current = false;
-      window.NexvaChat.init(config.apiKey, { ...config, apiUrl });
-      isInitialized.current = true;
-    }
-  }, [config.apiKey]);
+    mountRef.current = true;
+    isInitialized.current = false;
 
-  useEffect(() => {
+    // Attempt to initialize immediately
+    initWidget();
+
+    // Poll for window.NexvaChat availability
+    const intervalId = setInterval(() => {
+      if ((window as any).NexvaChat) {
+        initWidget();
+        // If initialized, clear interval
+        if (isInitialized.current) {
+          clearInterval(intervalId);
+        }
+      }
+    }, 100);
+
+    // Stop polling after 10 seconds to avoid infinite loops if script fails
+    const timeoutId = setTimeout(() => {
+      clearInterval(intervalId);
+    }, 10000);
+
     return () => {
-      if (window.NexvaChat && isInitialized.current) {
-        window.NexvaChat.destroy();
+      mountRef.current = false;
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+      if ((window as any).NexvaChat && isInitialized.current) {
+        try {
+          (window as any).NexvaChat.destroy();
+        } catch (e) {
+          // Ignore destroy errors
+        }
       }
       isInitialized.current = false;
     };
-  }, []);
+  }, [config.apiKey, apiUrl]);
 
   const scriptSrc = `${apiUrl}/widget.js`;
 
@@ -48,8 +69,8 @@ export const NexvaChatNext: React.FC<NexvaChatNextProps> = ({ config }) => {
       src={scriptSrc}
       type="module"
       strategy="lazyOnload"
-      onLoad={handleScriptLoad}
+      crossOrigin="anonymous"
+      onLoad={initWidget}
     />
   );
 };
-
